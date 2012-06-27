@@ -1,5 +1,6 @@
-couchnote provide e ease to use access to a couchdb. The data to be defined in a config (typedef).
+reveal.js-groovy
+================
 
-couchnote generate the couchdb views.
+reveal.js presentation with groovy markup builder
 
-project is depend on gcouch (https://github.com/twest72/gcouch)
+project is depend on reveal.js (https://github.com/hakimel/reveal.js)

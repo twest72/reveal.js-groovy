@@ -57,16 +57,13 @@ task generateHtml << {
     logger.info "execute script     : $scriptName"
     logger.info "target directory   : $generateHtmlTargetDir"
 
-
     def scriptEngine = new GroovyScriptEngine([scriptPath] as String[])
+
     def binding = new Binding()
-    binding.setVariable('scriptPath', scriptPath)
-    binding.setVariable('targetDir', generateHtmlTargetDir)
-    binding.setVariable('targetName', generateHtmlTargetName)
-    scriptEngine.run(scriptName, binding)
+    binding.setVariable 'scriptPath', scriptPath
+    binding.setVariable 'targetDir', generateHtmlTargetDir
+    binding.setVariable 'targetName', generateHtmlTargetName
 
-
-
-
+    scriptEngine.run scriptName, binding
 }
 

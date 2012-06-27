@@ -1,18 +1,36 @@
+// this script contains the (most) static code of the presentation
+
 // fallback for properties
-if(!hasProperty('scriptPath')) setProperty('scriptPath', '.')
-if(!hasProperty('targetDir')) setProperty('targetDir', '.')
-if(!hasProperty('targetName')) setProperty('targetName', 'index.html')
+try {
+    println "scriptPath: $scriptPath"
+
+} catch(MissingPropertyException e) {
+    setProperty('scriptPath', '.')
+    println "scriptPath: $scriptPath"
+}
+try {
+    println "targetDir: $targetDir"
+
+} catch(MissingPropertyException e) {
+    setProperty('targetDir', '.')
+    println "targetDir: $targetDir"
+}
+try {
+    println "targetName: $targetName"
+
+} catch(MissingPropertyException e) {
+    setProperty('targetName', 'index.html')
+    println "targetName: $targetName"
+}
 
 
 // data of the presentation
 def data = evaluate(new File("$scriptPath/index-data.groovy"))
 
-
 // builder initialisation
 def fileName = "$targetDir/$targetName"
 def fileWriter = new FileWriter(fileName)
 def builder = new groovy.xml.MarkupBuilder(fileWriter)
-
 
 // presentation build
 builder.html(lang: 'en') {
@@ -58,8 +76,6 @@ builder.html(lang: 'en') {
                 mkp.yieldUnescaped data.sectionWriter
             }
         }
-
-
 
         // The navigational controls UI
         mkp.yieldUnescaped """

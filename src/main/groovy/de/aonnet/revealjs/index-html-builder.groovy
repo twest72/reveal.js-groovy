@@ -4,25 +4,24 @@
 try {
     println "scriptPath: $scriptPath"
 
-} catch(MissingPropertyException e) {
+} catch (MissingPropertyException e) {
     setProperty('scriptPath', '.')
     println "scriptPath: $scriptPath"
 }
 try {
     println "targetDir: $targetDir"
 
-} catch(MissingPropertyException e) {
+} catch (MissingPropertyException e) {
     setProperty('targetDir', '.')
     println "targetDir: $targetDir"
 }
 try {
     println "targetName: $targetName"
 
-} catch(MissingPropertyException e) {
+} catch (MissingPropertyException e) {
     setProperty('targetName', 'index.html')
     println "targetName: $targetName"
 }
-
 
 // data of the presentation
 def data = evaluate(new File("$scriptPath/index-data.groovy"))
@@ -69,82 +68,48 @@ builder.html(lang: 'en') {
                 section(class: 'present', style: 'display: block;') {
                     h1 data.cover.title
                     h3(class: 'inverted', data.cover.subtitle)
+
                     // Delicously hacky. Look away.
                     script """if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );"""
                 }
 
                 mkp.yieldUnescaped data.sectionWriter
             }
+        // The navigational controls UI
+        aside(class: "controls") {
+            a(class: "left", href: "#") {
+                mkp.yieldUnescaped '&#x25C4;'
+            }
+            a(class: "right", href: "#") {
+                mkp.yieldUnescaped '&#x25BA;'
+            }
+            a(class: "up", href: "#") {
+                mkp.yieldUnescaped '&#x25B2;'
+            }
+            a(class: "down", href: "#") {
+                mkp.yieldUnescaped '&#x25BC;'
+            }
         }
 
-        // The navigational controls UI
-        mkp.yieldUnescaped """
-        <!-- The navigational controls UI -->
-        <aside class="controls">
-            <a class="left" href="#">&#x25C4;</a>
-            <a class="right" href="#">&#x25BA;</a>
-            <a class="up" href="#">&#x25B2;</a>
-            <a class="down" href="#">&#x25BC;</a>
-        </aside>
+        // Displays presentation progress, max value changes via JS to reflect # of slides
+        div(class: "progress") {
+            span()
+        }
+        }
 
-        <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
-        <div class="progress"><span></span></div>
-        """
 
         // Optional libraries for code syntax highlighting and classList support in IE9
-        mkp.yieldUnescaped """
-        <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
-        <script src="lib/highlight.js"></script>
-        <script src="lib/classList.js"></script>
 
-        <script src="js/reveal.js"></script>
+        // Attention: the empty content is necessary to generate:
+        // <script src='lib/highlight.js'></script>
+        // instead: <script src='lib/highlight.js' />
+        script(src: 'lib/highlight.js', '')
+        script(src: 'lib/classList.js', '')
 
-        <script>
-            // Parse the query string into a key/value object
-            var query = {};
-            location.search.replace( /[A-Z0-9]+?=(\\w*)/gi, function(a) {
-                query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
-            } );
-
-            // Fires when a slide with data-state=customevent is activated
-            Reveal.addEventListener( 'customevent', function() {
-                alert( '"customevent" has fired' );
-            } );
-
-            // Fires each time a new slide is activated
-            Reveal.addEventListener( 'slidechanged', function( event ) {
-                // event.previousSlide, event.currentSlide, event.indexh, event.indexv
-            } );
-
-            Reveal.initialize({
-                // Display controls in the bottom right corner
-                controls: true,
-
-                // Display a presentation progress bar
-                progress: true,
-
-                // If true; each slide will be pushed to the browser history
-                history: true,
-
-                // Loops the presentation, defaults to false
-                loop: false,
-
-                // Flags if mouse wheel navigation should be enabled
-                mouseWheel: true,
-
-                // Apply a 3D roll to links on hover
-                rollingLinks: true,
-
-                // UI style
-                theme: query.theme || 'neon', // default/neon
-
-                // Transition style
-                transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
-            });
-
-            hljs.initHighlightingOnLoad();
-        </script>
-"""
-
+        // libraries for reveal.js
+        script(src: 'js/reveal.js', '')
+        script {
+            mkp.yieldUnescaped new File("$scriptPath/reveal-initialize.js").text
+        }
     }
 }

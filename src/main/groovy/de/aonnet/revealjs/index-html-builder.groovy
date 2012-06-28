@@ -22,9 +22,32 @@ try {
     setProperty('targetName', 'index.html')
     println "targetName: $targetName"
 }
+try {
+    println "targetUrl: $targetUrl"
 
-// data of the presentation
-def data = evaluate(new File("$scriptPath/index-data.groovy"))
+} catch (MissingPropertyException e) {
+    setProperty('targetUrl', '.')
+    println "targetUrl: $targetUrl"
+}
+
+// Map and builder initialisation (for presentation data)
+def data = [:]
+data.head = [:]
+data.cover = [:]
+data.sectionWriter = new StringWriter()
+def sections = new groovy.xml.MarkupBuilder(data.sectionWriter)
+
+// call the script with the presentation data
+def scriptEngine = new GroovyScriptEngine([scriptPath] as String[])
+
+def binding = new Binding()
+binding.setVariable 'data', data
+binding.setVariable 'sections', sections
+binding.setVariable 'scriptPath', scriptPath
+binding.setVariable 'targetName', targetName
+binding.setVariable 'targetUrl', targetUrl
+
+data = scriptEngine.run 'index-data.groovy', binding
 
 // builder initialisation
 def fileName = "$targetDir/$targetName"
@@ -56,7 +79,7 @@ builder.html(lang: 'en') {
     }
 
     body {
-        div(class: 'reveal linear') {
+        div(class: 'reveal') {
 
             // Used to fade in a background when a specific slide state is reached
             div(class: 'state-background')
@@ -75,28 +98,28 @@ builder.html(lang: 'en') {
 
                 mkp.yieldUnescaped data.sectionWriter
             }
-        // The navigational controls UI
-        aside(class: "controls") {
-            a(class: "left", href: "#") {
-                mkp.yieldUnescaped '&#x25C4;'
-            }
-            a(class: "right", href: "#") {
-                mkp.yieldUnescaped '&#x25BA;'
-            }
-            a(class: "up", href: "#") {
-                mkp.yieldUnescaped '&#x25B2;'
-            }
-            a(class: "down", href: "#") {
-                mkp.yieldUnescaped '&#x25BC;'
-            }
-        }
 
-        // Displays presentation progress, max value changes via JS to reflect # of slides
-        div(class: "progress") {
-            span()
-        }
-        }
+            // The navigational controls UI
+            aside(class: "controls") {
+                a(class: "left", href: "#") {
+                    mkp.yieldUnescaped '&#x25C4;'
+                }
+                a(class: "right", href: "#") {
+                    mkp.yieldUnescaped '&#x25BA;'
+                }
+                a(class: "up", href: "#") {
+                    mkp.yieldUnescaped '&#x25B2;'
+                }
+                a(class: "down", href: "#") {
+                    mkp.yieldUnescaped '&#x25BC;'
+                }
+            }
 
+            // Displays presentation progress, max value changes via JS to reflect # of slides
+            div(class: "progress") {
+                span()
+            }
+        }
 
         // Optional libraries for code syntax highlighting and classList support in IE9
 

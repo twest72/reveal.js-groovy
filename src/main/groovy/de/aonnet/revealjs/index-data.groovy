@@ -1,15 +1,5 @@
 // this script contains data of the presentation
 
-// Map and builder initialisation
-def data = [:]
-data.head = [:]
-data.cover = [:]
-data.sectionWriter = new StringWriter()
-data.sections = new groovy.xml.MarkupBuilder(data.sectionWriter)
-
-// target url
-data.url = 'http://lab.hakim.se/reveal-js'
-
 // header data
 data.head.title = 'reveal.js'
 data.head.description = 'An easy to use CSS 3D slideshow tool for quickly creating good looking HTML presentations.'
@@ -20,7 +10,7 @@ data.cover.title = 'Reveal.js'
 data.cover.subtitle = 'CSS 3D Presentations'
 
 // sections
-data.sections.section {
+sections.section {
     h2 'Heads Up'
     p """reveal.js is an easy to use, HTML based, presentation tool. You'll need a modern browser with
             support for CSS 3D transforms to see it in its full glory."""
@@ -37,7 +27,7 @@ data.sections.section {
 }
 
 // Example of nested vertical slides
-data.sections.section {
+sections.section {
     section {
         h2 'Vertical Slides'
         p {
@@ -72,33 +62,35 @@ data.sections.section {
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Holistic Overview'
-    p 'Press'
-    strong 'ESC'
-    p 'to enter the slide overview!'
+    p {
+        mkp.yield 'Press'
+        strong 'ESC'
+        mkp.yield ' to enter the slide overview!'
+    }
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Works in Mobile Safari'
     p 'Try it out! You can swipe through the slides pinch your way to the overview.'
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Transition Styles'
     p 'You can select from different transitions, like:'
     ul {
-        li { a(href: "${ data.url }/?transition=cube", 'Cube') }
-        li { a(href: "${ data.url }/?transition=page", 'Page') }
-        li { a(href: "${ data.url }/?transition=concave", 'Concave') }
-        li { a(href: "${ data.url }/?transition=linear", 'Linear') }
+        li { a(href: "${ targetUrl }?transition=cube", 'Cube') }
+        li { a(href: "${ targetUrl }?transition=page", 'Page') }
+        li { a(href: "${ targetUrl }?transition=concave", 'Concave') }
+        li { a(href: "${ targetUrl }?transition=linear", 'Linear') }
     }
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Marvelous Unordered List'
     ul {
         li 'No order here'
@@ -109,7 +101,7 @@ data.sections.section {
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Fantastic Ordered List'
     ol {
         li 'One is smaller than...'
@@ -119,7 +111,7 @@ data.sections.section {
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Clever Quotes'
     p {
         mkp.yield 'These guys come in two forms, inline:'
@@ -131,7 +123,7 @@ data.sections.section {
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Pretty Code'
     pre {
         code(contenteditable: '') {
@@ -145,7 +137,7 @@ data.sections.section {
 }
 
 
-data.sections.section {
+sections.section {
     h2 'Stellar Links'
     ul {
         li {
@@ -161,9 +153,10 @@ data.sections.section {
 }
 
 
-data.sections.section {
+sections.section {
     h1 'THE END'
     h3(class: 'inverted', 'BY Hakim El Hattab / hakim.se')
 }
 
+// returns the presentation data
 return data

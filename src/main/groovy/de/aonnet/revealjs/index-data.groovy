@@ -26,6 +26,42 @@ sections.section {
     }
 }
 
+sections.section {
+    h2 'What makes Groovy here?'
+    p {
+        mkp.yield 'Groovy is an agile and dynamic language for the Java Virtual Machine.'
+        a(href: 'http://groovy.codehaus.org/Creating+XML+using+Groovy%27s+MarkupBuilder', "Groovy's MarkupBuilder")
+        mkp.yield " supports Groovy's builder pattern with XML/HTML."
+    }
+
+    p {
+        i {
+            small {
+                mkp.yield '-'
+                a(href: 'http://www.aonnet.de', 'Thomas Westphal')
+                mkp.yield ' /'
+                a(href: 'http://twitter.com/twest72', '@twest72')
+                mkp.yield ' /'
+                a(href: 'https://github.com/twest72', 'twest72@github')
+            }
+        }
+    }
+}
+
+sections.section {
+    h2 'Pretty Groovy Code for reveal.js'
+    p "The following script contains the code for this page. 'example.groovy' is a Groovy script."
+    pre {
+        code(class:'java', contenteditable: '') {
+            mkp.yieldUnescaped new File("$scriptPath/example.groovy").text
+        }
+    }
+    p {
+        mkp.yield 'Courtesy of'
+        a(href: 'http://softwaremaniacs.org/soft/highlight/en/description/', 'highlight.js')
+    }
+}
+
 // Example of nested vertical slides
 sections.section {
     section {

@@ -30,14 +30,14 @@ try {
     println "targetUrl: $targetUrl"
 }
 
-// Map and builder initialisation (for presentation data)
+// Map and builder initialisation (presentation data)
 def data = [:]
 data.head = [:]
 data.cover = [:]
 data.sectionWriter = new StringWriter()
 def sections = new groovy.xml.MarkupBuilder(data.sectionWriter)
 
-// call the script with the presentation data
+// call script with presentation data
 def scriptEngine = new GroovyScriptEngine([scriptPath] as String[])
 
 def binding = new Binding()
@@ -49,7 +49,7 @@ binding.setVariable 'targetUrl', targetUrl
 
 data = scriptEngine.run 'index-data.groovy', binding
 
-// builder initialisation
+// builder initialisation (html file)
 def fileName = "$targetDir/$targetName"
 def fileWriter = new FileWriter(fileName)
 def builder = new groovy.xml.MarkupBuilder(fileWriter)

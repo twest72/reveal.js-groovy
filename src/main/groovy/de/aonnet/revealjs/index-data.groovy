@@ -27,7 +27,7 @@ sections.section {
 }
 
 sections.section {
-    h2 'What makes Groovy here?'
+    h2 'What\'s the deal with Groovy?'
     p {
         mkp.yield 'Groovy is an agile and dynamic language for the Java Virtual Machine.'
         a(href: 'http://groovy.codehaus.org/Creating+XML+using+Groovy%27s+MarkupBuilder', "Groovy's MarkupBuilder")
